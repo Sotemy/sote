@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>main</h1>
+    <div class="alert alert-info">
+            {% for r in result %}
+                    <h1>{{r.title}}</h1>
+                    <p>{{r.text}}</p>
+                    <a href="/post/{{r.id}}" class='btn btn-success'>Look</a>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}

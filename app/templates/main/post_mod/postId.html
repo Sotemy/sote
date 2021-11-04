@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Post {{ post.id }}</h1>
+    <div class="alert alert-info">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.text }}</p>
+        <p>{{ post.author }}</p>
+    </div>
+</div>
+{% endblock %}

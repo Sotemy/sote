@@ -1,0 +1,3 @@
+flask db migrate -m "posts table"  
+flask db init     
+flask db upgrade    
