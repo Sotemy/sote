@@ -24,6 +24,6 @@ def addPost():
 
 @post_mod.route('/<id>')
 def postId(id):
-    post=Post.query.filter_by(id=id).first()
-    user=User.query.filter_by(id)
-    return render_template('main/post_mod/postId.html', post=post)
+    post=Post.query.filter_by(id=id).first_or_404()
+    user=User.query.filter_by(id=post.author).first()
+    return render_template('main/post_mod/postId.html', post=post, user=user)

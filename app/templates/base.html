@@ -16,7 +16,7 @@
           </a>
     
           <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Features</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Pricing</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">FAQs</a></li>
@@ -26,11 +26,11 @@
           {% if current_user.is_anonymous %}
           <div class="col-md-3 text-end">
             <a class="btn btn-outline-primary me-2" href="{{ url_for('auth.login') }}">Login</a>
-            <a class="btn btn-primary" href="{{ url_for('auth.login') }}">Sign-up</a>
+            <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Sign-up</a>
           </div>
           {% else %}
           <div class="col-md-3 text-end">
-            <a class="btn btn-outline-primary me-2" href="{{ url_for('main.index') }}">{{ current_user.username }}</a>
+            <a class="btn btn-outline-primary me-2" href="{{ url_for('main.profile.showYourProfile') }}">{{ current_user.username }}</a>
             <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
           {% endif %}
         </header>

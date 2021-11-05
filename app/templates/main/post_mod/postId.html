@@ -8,7 +8,7 @@
     <div class="alert alert-info">
         <h1>{{ post.title }}</h1>
         <p>{{ post.text }}</p>
-        <p>{{ post.author }}</p>
+        <p>Posted by <a href="/{{ user.id }}">{{ user.username }}</a></p>
     </div>
 </div>
 {% endblock %}
