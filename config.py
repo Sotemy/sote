@@ -14,6 +14,10 @@ class DevelopmentConfig(Base):
     TESTING=True
     PERMANENT_SESSION_LIFETIME=timedelta(days=1)
 
+    MAIL_SERVER='localhost'
+    MAIL_PORT=8025
+    
+
 class ProductionConfig(Base):
     DEBUG=True
     TESTING=True

@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, mail
 from app.models import Post, User, Role
 
 @app.shell_context_processor

@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_mail import Mail
 
 from config import  DevelopmentConfig, ProductionConfig
 
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 db=SQLAlchemy(app)
 migrate = Migrate(app)
+mail = Mail(app)
 login_manager=LoginManager(app)
 
 login_manager.login_view = 'auth.login'
