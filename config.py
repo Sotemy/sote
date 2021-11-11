@@ -13,7 +13,7 @@ class DevelopmentConfig(Base):
     DEBUG=True
     TESTING=True
     PERMANENT_SESSION_LIFETIME=timedelta(days=1)
-
+    SQLALCHEMY_RECORD_QUERIES=True
     MAIL_SERVER='localhost'
     MAIL_PORT=8025
     
@@ -22,3 +22,5 @@ class ProductionConfig(Base):
     DEBUG=True
     TESTING=True
     PERMANENT_SESSION_LIFETIME=timedelta(days=1)
+
+    

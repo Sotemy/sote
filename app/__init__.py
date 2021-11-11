@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, get_debug_queries
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
@@ -17,6 +17,14 @@ login_manager=LoginManager(app)
 login_manager.login_view = 'auth.login'
 
 toolbar = DebugToolbarExtension(app)
+
+@app.after_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= 0:
+            print(query.statement, query.parameters, query.duration, query.context)
+    return response
+
 
 #########################################   MODULES    #########################################
 
