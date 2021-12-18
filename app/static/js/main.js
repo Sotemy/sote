@@ -7,18 +7,19 @@ $(function () {
     });
     
     $(".userbtn").on('click', function () {
-        console.log($(this).text() == 'register');
         $('.modal-title').text($(this).text());
+
         if($(this).text() === 'register'){
-            console.log($(this).text() == 'register' && $('#passwordInput2'));
-            console.log($('#passwordInput2'));
-            console.log($('#passwordInput2').length);
+
             if ($('#passwordInput2').length == 0){
+
                 $('#userForm').append("<div class='mb-3' id='mb-2'><label for='pwd' class='form-label'>Repeat password:</label><input type='password' class='form-control' id='passwordInput2' placeholder='Repeat password' name='pswd' required></div>");
             };
         } else if ($(this).text() === 'login'){
+
             $('#mb-2').remove();
-        }
+        };
+
         return $("#myModal").modal("show", { keyboard: true });
 
     });
@@ -30,18 +31,12 @@ $(function () {
         let password2= $('#passwordInput2');
         let validornot = validateData(login, password, password2);
 
-        // $('input').focus(function() {
-        //     $( this ).next( validornot );
-        // });
-
-        if (validornot === true) {
+        if (validornot === false) {
             return $('.form-control').attr("class", "form-control is-invalid");
         };
 
-        
-
         $('.form-control').attr("class", "form-control is-valid");
-        if (password2) {
+        if (password2.length > 0) {
             req=$.ajax({
                 type: "POST",
                 url: '/auth/register',
@@ -83,9 +78,6 @@ $(function () {
         password: {
             min_length: 8,
             excepted_symbols: ['ü', 'Ü', 'ö', 'Ö', 'ä', 'Ä']
-        },
-        password2:{
-            equals:$('#passwordInput').val()
         }
     };
 
@@ -105,17 +97,19 @@ $(function () {
         return true;
     };
 
-    function validatePassword2 ( password2){
-        if (password2 != rule.password2.equals){
-            console.log(rule.password2.equals, password2)
+    function validatePassword2 (password, password2){
+        if (password2.val() != password.val()){
+            console.log(password.val(), password2.val())
             return false;
         };
         return true;
     };
 
     function validateData (login, password, password2) {
-        if(password2===null){return validateLogin(login) && validatePassword(password);};
-        return validateLogin(login) && validatePassword(password) && validatePassword2(password2);
+        if (password2.val() === undefined) {
+            return validateLogin(login) && validatePassword(password);
+        }
+        return validateLogin(login) && validatePassword(password) && validatePassword2(password, password2);
     };
 
 });
