@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from flask_login.utils import login_user
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
 from app import db
 from app.auth import auth
@@ -37,3 +37,7 @@ def registerpage():
             return jsonify({'result':'success'})
         except Exception as e:
             return jsonify({'result':e}) 
+
+@auth.route('/reset-password')
+def reserpage():
+    pass
