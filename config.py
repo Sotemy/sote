@@ -5,6 +5,7 @@ class Config(object):
 class Development(Config):
     SECRET_KEY='KDKASsldksad2138293/('
     DEBUG=True
+    TESTING=True
 
 class Production(Config):
     DEBUG=False
