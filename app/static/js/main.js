@@ -1,4 +1,8 @@
 $(function () {
+    
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+      })
 
     $(".userbtn").on('click', function () {
         setTitleName(this);
@@ -6,7 +10,7 @@ $(function () {
         $('form').remove();
             $('.modal-body').append(`
             <form action="" class="needs-validation" id="userForm" novalidate>
-            <lm href='auth/login'></lm>
+            <lm href='auth/login' id='lmurl'></lm>
             <div class="mb-3">
                 <label for="uname" class="form-label">Username:</label>
                 <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
@@ -29,11 +33,11 @@ $(function () {
 
             $('form').remove();
 
-            if ($('#passwordInput2').length == 0) {
+            if ($('#passwordInput2').length === 0) {
 
                 $('.modal-body').append(`
                 <form action="" class="needs-validation" id="userForm" novalidate>
-                    <lm href='auth/register'></lm>
+                    <lm href='auth/register' id='lmurl'></lm>
                 <div class="mb-3">
                     <label for="uname" class="form-label">Username:</label>
                     <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
@@ -62,14 +66,14 @@ $(function () {
             $('#resetPassword').hide();
             $('.modal-body').prepend(`
             <form>
-            <lm href='auth/reset-password'></lm>
+            <lm href='auth/reset-password' id='lmurl'></lm>
             <div class="mb-3">
                 <label for="pwd" class="form-label">Your username:</label>
                 <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
                     name="pwd" required>
             </div>
             <div class="mb-3">
-                <label for="secret" class="form-label">Password:</label>
+                <label for="secret" class="form-label">Secret:</label>
                 <input type="password" class="form-control" id="secretInput" placeholder="Enter secret"
                     name="secret" required>
             </div>
@@ -81,11 +85,9 @@ $(function () {
 
     $('#checkBtn').on('click', function () {
 
-        let login = $('#loginInput');
-        let password = $('#passwordInput');
-        let password2 = $('#passwordInput2');
-        console.log(password.val(), password2.val());
-        let secret = $('#secretInput');
+        let login = $('#loginInput').val();
+        let password = $('#passwordInput').val();
+        let password2 = $('#passwordInput2').val();
         let validornot = validateData(login, password, password2);
         console.log(validornot);
 
@@ -94,31 +96,23 @@ $(function () {
         };
 
         $('.form-control').attr("class", "form-control is-valid");
-        let title = getTitleName();
-        console.log(title);
+        let getUrl=$('#lmurl').attr('href');
         if (getUrl === 'auth/register') {
-            let data = { login: login.val(), password: password.val(), password2: password2.val() };
-            sendOrRequestData("post",getUrl(), data);
-        } else if (getUrl === 'auth/login') {
-            let data = { login: login.val(), password: password.val() };
-            sendOrRequestData("post",getUrl(), data);
-        } else if (getUrl === 'auth/reset-password') {
-            let data = { login: login.val(), password: secret.val() };
-            sendOrRequestData("post",getUrl(), data);
-        };
+            data = { login: login, password: password, password2: password2 };
 
+        } else if (getUrl === 'auth/login') {
+            data = { login: login, password: password };
+
+        } else if (getUrl === 'auth/reset-password') {
+            let secret = $('#secretInput').val();
+            data = { login: login, secret: secret };
+        };
+        sendOrRequestData("post",getUrl, data);
     });
 
-    function getUrl() {
-        $('lm').attr('href').text();
-    }
 
     function setTitleName(arg) {
         $('.modal-title').text($(arg).text());
-    };
-
-    function getTitleName() {
-        $('div .modal-title').text();
     };
 
     function openModal() {
@@ -141,7 +135,7 @@ $(function () {
 
 
     function validatePassword(password) {
-        if (password.val().length < rule.password.min_length) {
+        if (password.length < rule.password.min_length) {
             return false;
         };
         return true;
@@ -149,15 +143,15 @@ $(function () {
     };
 
     function validateLogin(login) {
-        if (login.val().length < rule.login.min_length) {
+        if (login.length < rule.login.min_length) {
             return false;
         };
         return true;
     };
 
     function validatePassword2(password, password2) {
-        if (password2.val() != password.val()) {
-            console.log(password.val(), password2.val())
+        if (password2 != password) {
+            console.log(password, password2)
             return false;
         };
         return true;
@@ -165,54 +159,38 @@ $(function () {
 
     function validateData(login, password, password2) {
 
-        if (password.val() === undefined) {
+        if (password === undefined) {
             return validateLogin(login);
         };
 
-        if (password2.val() === undefined) {
+        if (password2 === undefined) {
             return validateLogin(login) && validatePassword(password);
         };
 
         return validateLogin(login) && validatePassword(password) && validatePassword2(password, password2);
     };
 
-    function sendOrRequestData(type, url, data) {
+    function sendOrRequestData (type, url, data) {
         '{ login: login.val(), password: password.val() }'
         req = $.ajax({
             type: type,
             url: url,
             data: data,
             success: function (text) {
-                let response = text;
-                return response;
+                var jsonRes = text.result;
+                if(jsonRes === 'success'){
+                    return $('#myModal').modal('toggle')
+                };
+                return alert(jsonRes);
             },
             error: function (status, error) {
-
                 return status, error;
             }
         });
 
         req.done(function (response) {
-            return console.log(response);
+            return console.log(response.result);
         });
     }
 
 });
-
-
-// $('.modal-body').append(
-`
-<form action="" class="needs-validation" id="userForm" novalidate>
-<div class="mb-3">
-    <label for="uname" class="form-label">Username:</label>
-    <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
-        name="uname" required>
-</div>
-<div class="mb-3">
-    <label for="pwd" class="form-label">Password:</label>
-    <input type="password" class="form-control" id="passwordInput" placeholder="Enter password"
-        name="pswd" required>
-</div>
-</form>
-<button class="btn btn-info" id="resetPassword">Forgot password?</button>`
-// );

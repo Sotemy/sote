@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from flask_login.utils import login_user
+from flask_login.utils import login_user, logout_user
 from werkzeug.security import check_password_hash
 
 from app import db, app
@@ -15,7 +15,7 @@ def loginpage():
         if user:
             if check_password_hash(user.password, password):
                 login_user(user)
-                return jsonify({'result':'Success'})
+                return jsonify({'result':'success'})
             return jsonify({'result':'Wrong password'})
         return jsonify({'result':'Wrong username'})
 
@@ -33,7 +33,7 @@ def registerpage():
         if password!=password2:
             return jsonify({'result':'Unequal passwords'})
 
-        if check_val(login, password):
+        if check_val(login, password)==False:
             return jsonify({'result':'Too short'})
 
         user=User(login=login, password=password)
@@ -58,3 +58,8 @@ def resetpage():
 @auth.route('/get-key')
 def requestKey():
     return jsonify({'result':app.config['SECRET_KEY']})
+
+@auth.route('/logout')
+def logoutUser():
+    logout_user()
+    return jsonify({'result':'success'})
