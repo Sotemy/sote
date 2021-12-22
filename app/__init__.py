@@ -9,6 +9,7 @@ app.config.from_object(Development)
 db=SQLAlchemy(app)
 login_manager = LoginManager(app)
 
+
 from app.main import main
 from app.auth import auth
 
