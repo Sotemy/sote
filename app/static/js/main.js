@@ -27,6 +27,7 @@ $(function () {
 
         $('div .mb-3').focusin(function () {
             $('.form-control').attr("class", "form-control");
+            $('.alertPlace').empty();
         });
 
         if ($(this).attr('id') === 'regbtn') {
@@ -108,6 +109,7 @@ $(function () {
             data = { login: login, secret: secret };
         };
         sendOrRequestData("post",getUrl, data);
+
     });
 
 
@@ -172,25 +174,33 @@ $(function () {
 
     function sendOrRequestData (type, url, data) {
         '{ login: login.val(), password: password.val() }'
-        req = $.ajax({
+
+        let req = $.ajax({
             type: type,
             url: url,
             data: data,
-            success: function (text) {
-                var jsonRes = text.result;
-                if(jsonRes === 'success'){
-                    return $('#myModal').modal('toggle')
-                };
-                return alert(jsonRes);
+            success: function (jsonRes) {
+                if(jsonRes.result === 'success'){
+                    alert(jsonRes.result, 'success');   
+                    return $('#myModal').modal('toggle');
+                };       
+
+                return alert(jsonRes.result, 'danger');      
+
             },
             error: function (status, error) {
-                return status, error;
+                return alert(status + error, 'danger');
             }
         });
 
         req.done(function (response) {
             return console.log(response.result);
         });
-    }
+    };
+
+    function alert(message, type) {
+        let al = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        $('.alertPlace').append(al);
+    };
 
 });
