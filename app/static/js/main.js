@@ -7,22 +7,22 @@ $(function () {
     $(".userbtn").on('click', function () {
         setTitleName(this);
 
-        $('form').remove();
-            $('.modal-body').append(`
-            <form action="" class="needs-validation" id="userForm" novalidate>
-            <lm href='auth/login' id='lmurl'></lm>
-            <div class="mb-3">
-                <label for="uname" class="form-label">Username:</label>
-                <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
-                    name="uname" required>
-            </div>
-            <div class="mb-3">
-                <label for="pwd" class="form-label">Password:</label>
-                <input type="password" class="form-control" id="passwordInput" placeholder="Enter password"
-                    name="pswd" required>
-            </div>
-            <button class="btn btn-info" id="resetPassword">Forgot password?</button>
-           </form>`);
+        $('.modal-body').empty();
+        $('.modal-body').append(`
+        <form action="" class="needs-validation" id="userForm" novalidate>
+        <lm href='auth/login' id='lmurl'></lm>
+        <div class="mb-3">
+            <label for="uname" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
+                name="uname" required>
+        </div>
+        <div class="mb-3">
+            <label for="pwd" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="passwordInput" placeholder="Enter password"
+                name="pswd" required>
+        </div>
+        <a class="btn btn-info" id="resetPassword">Forgot password?</a>
+        </form>`);
 
 
         $('div .mb-3').focusin(function () {
@@ -64,7 +64,7 @@ $(function () {
             console.log(key);
 
             $('form').remove();
-            $('#resetPassword').hide();
+            $(this).hide();
             $('.modal-body').prepend(`
             <form>
             <lm href='auth/reset-password' id='lmurl'></lm>
@@ -181,11 +181,15 @@ $(function () {
             data: data,
             success: function (jsonRes) {
                 if(jsonRes.result === 'success'){
-                    alert(jsonRes.result, 'success');   
+                    alert(jsonRes.result, 'success');  
                     return $('#myModal').modal('toggle');
-                };       
+                } else if(jsonRes.result === 'key'){
+                    return console.log(jsonRes.key);
+                };     
 
+                $('.form-control').attr("class", "form-control is-invalid");
                 return alert(jsonRes.result, 'danger');      
+
 
             },
             error: function (status, error) {
@@ -200,7 +204,10 @@ $(function () {
 
     function alert(message, type) {
         let al = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        $('.alertPlace').append(al);
+        $('.alertPlace').prepend(al);
+        setTimeout(function(){
+            $('.alertPlace').empty();
+        },5000);
     };
 
 });

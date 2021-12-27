@@ -16,8 +16,8 @@ def loginpage():
             if check_password_hash(user.password, password):
                 login_user(user)
                 return jsonify({'result':'success'})
-            return jsonify({'result':'Wrong password'})
-        return jsonify({'result':'Wrong username'})
+            return jsonify({'result':'error'})
+        return jsonify({'result':'error'})
 
 @auth.route('/register', methods=['POST'])
 def registerpage():
@@ -28,13 +28,13 @@ def registerpage():
         user=User.query.filter_by(login=login).first()
 
         if user:
-            return jsonify({'result':'Login in use'})
+            return jsonify({'result':'error'})
 
         if password!=password2:
-            return jsonify({'result':'Unequal passwords'})
+            return jsonify({'result':'error'})
 
         if check_val(login, password)==False:
-            return jsonify({'result':'Too short'})
+            return jsonify({'result':'error'})
 
         user=User(login=login, password=password)
         try:
@@ -42,7 +42,7 @@ def registerpage():
             db.session.commit()
             return jsonify({'result':'success'})
         except Exception as e:
-            return jsonify({'result':e}) 
+            return jsonify({'result':'error'}) 
 
 @auth.route('/reset-password', methods=['POST'])
 def resetpage():
@@ -57,7 +57,8 @@ def resetpage():
 
 @auth.route('/get-key')
 def requestKey():
-    return jsonify({'result':app.config['SECRET_KEY']})
+    return jsonify({'result':'key',
+    'key':'adasdQWEQW'})
 
 @auth.route('/logout')
 def logoutUser():
