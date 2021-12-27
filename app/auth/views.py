@@ -1,66 +1,81 @@
-from flask import request, jsonify
-from flask_login.utils import login_user, logout_user
+from flask import request, jsonify, redirect, url_for, render_template
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import check_password_hash
+from flask_mail import Message
 
-from app import db, app
+from app import db, mail
 from app.auth import auth
 from app.models import User, check_val
+from app.auth.email import send_password_reset_email
 
 @auth.route('/login', methods=['POST'])
 def loginpage():
     if request.method == 'POST':
-        login=request.form['login']
+        email=request.form['email']
         password=request.form['password']
-        user=User.query.filter_by(login=login).first()
+        user=User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
                 login_user(user)
                 return jsonify({'result':'success'})
-            return jsonify({'result':'error'})
-        return jsonify({'result':'error'})
+            return jsonify({'result':'error', 'text':'wrong password'})
+        return jsonify({'result':'error', 'text':'uregistered'})
 
 @auth.route('/register', methods=['POST'])
 def registerpage():
     if request.method == 'POST':
         login=request.form['login']
+        email=request.form['email']
         password=request.form['password']
         password2=request.form['password2']
         user=User.query.filter_by(login=login).first()
 
         if user:
-            return jsonify({'result':'error'})
+            return jsonify({'result':'error', 'text':'Exception'})
 
         if password!=password2:
-            return jsonify({'result':'error'})
+            return jsonify({'result':'error', 'text':'Exception'})
 
         if check_val(login, password)==False:
-            return jsonify({'result':'error'})
+            return jsonify({'result':'error', 'text':'Exception'})
 
-        user=User(login=login, password=password)
+        user=User(login=login, password=password, email=email)
         try:
             db.session.add(user)
             db.session.commit()
             return jsonify({'result':'success'})
         except Exception as e:
-            return jsonify({'result':'error'}) 
+            return jsonify({'result':'error', 'text':e}) 
 
-@auth.route('/reset-password', methods=['POST'])
+@auth.route('/reset-password', methods=['GET', 'POST'])
 def resetpage():
     if request.method == 'POST':
-        login=request.form['login']
-        user=User.query.filter_by(login=login).first()
+        email=request.form['email']
+        user=User.query.filter_by(email=email).first()
         if user:
-            if len(user.secret_phrase)>0:
-                
-                return jsonify({'':''})
+            send_password_reset_email(user)
+            return jsonify({'result':'success', 'text':'Link'})
+        return jsonify({'result':'error'})
+
+@auth.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    else:
+        user = User.verify_reset_password_token(token)
+        if not user:
+            return redirect(url_for('index'))
+        if request.method == 'post':
+            password=request.form['password']
+            user.set_password(password)
+            db.session.commit()
+            print('Your password has been reset.')
+            return redirect('/')
+        
+    return render_template('auth/reset_password.html')
 
 
-@auth.route('/get-key')
-def requestKey():
-    return jsonify({'result':'key',
-    'key':'adasdQWEQW'})
-
-@auth.route('/logout')
+@auth.route('/logout', methods=['get','post'])
 def logoutUser():
     logout_user()
-    return jsonify({'result':'success'})
+    return redirect('/')

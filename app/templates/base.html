@@ -45,9 +45,7 @@
                     <button type="button" class='btn btn-warning userbtn' id='loginbtn'>Login</button>
                     <button type="button" class='btn btn-dark userbtn' id='regbtn'>Register</button>
                     {% else %}
-                    <a tabindex="0" class="btn btn-warning" role="button" data-toggle="popover" data-trigger="focus"
-                        title="Dismissible popover"
-                        data-content="And here's some amazing content. It's very engaging. Right?">Logout</a>
+                    <a class="btn btn-warning" href="/auth/logout">Logout</a>
                     {% endif %}
                 </div>
             </div>

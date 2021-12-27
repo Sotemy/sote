@@ -1,19 +1,15 @@
 $(function () {
-    
-    $('.popover-dismiss').popover({
-        trigger: 'focus'
-      })
 
     $(".userbtn").on('click', function () {
         setTitleName(this);
 
-        $('.modal-body').empty();
+        $('form').remove();
         $('.modal-body').append(`
         <form action="" class="needs-validation" id="userForm" novalidate>
         <lm href='auth/login' id='lmurl'></lm>
         <div class="mb-3">
-            <label for="uname" class="form-label">Username:</label>
-            <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
+            <label for="uname" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="emailInput" placeholder="Enter username"
                 name="uname" required>
         </div>
         <div class="mb-3">
@@ -43,6 +39,11 @@ $(function () {
                     <label for="uname" class="form-label">Username:</label>
                     <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
                         name="uname" required>
+                <div class="mb-3">
+                    <label for="ml" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="emailInput" placeholder="Enter password"
+                        name="ml" required>
+                </div>
                 </div>
                 <div class="mb-3">
                     <label for="pwd" class="form-label">Password:</label>
@@ -69,14 +70,9 @@ $(function () {
             <form>
             <lm href='auth/reset-password' id='lmurl'></lm>
             <div class="mb-3">
-                <label for="pwd" class="form-label">Your username:</label>
-                <input type="text" class="form-control" id="loginInput" placeholder="Enter username"
+                <label for="pwd" class="form-label">Your email:</label>
+                <input type="email" class="form-control" id="emailInput" placeholder="Enter username"
                     name="pwd" required>
-            </div>
-            <div class="mb-3">
-                <label for="secret" class="form-label">Secret:</label>
-                <input type="password" class="form-control" id="secretInput" placeholder="Enter secret"
-                    name="secret" required>
             </div>
             </form>
             `);
@@ -86,10 +82,13 @@ $(function () {
 
     $('#checkBtn').on('click', function () {
 
+        let url = window.location.href;
+
+        let email = $('#emailInput').val();
         let login = $('#loginInput').val();
         let password = $('#passwordInput').val();
         let password2 = $('#passwordInput2').val();
-        let validornot = validateData(login, password, password2);
+        let validornot = validateData(email, password, password2, login);
         console.log(validornot);
 
         if (validornot === false) {
@@ -99,14 +98,13 @@ $(function () {
         $('.form-control').attr("class", "form-control is-valid");
         let getUrl=$('#lmurl').attr('href');
         if (getUrl === 'auth/register') {
-            data = { login: login, password: password, password2: password2 };
+            data = { login: login,email:email, password: password, password2: password2 };
 
         } else if (getUrl === 'auth/login') {
-            data = { login: login, password: password };
+            data = { email: email, password: password };
 
-        } else if (getUrl === 'auth/reset-password') {
-            let secret = $('#secretInput').val();
-            data = { login: login, secret: secret };
+        } else if (getUrl === 'auth/reset-password') { 
+            data = { email: email};
         };
         sendOrRequestData("post",getUrl, data);
 
@@ -136,6 +134,14 @@ $(function () {
     };
 
 
+    function validateEmail(email) {
+        if (email === undefined) {
+            return false;
+        };
+
+        return true;
+    };
+
     function validatePassword(password) {
         if (password.length < rule.password.min_length) {
             return false;
@@ -159,17 +165,22 @@ $(function () {
         return true;
     };
 
-    function validateData(login, password, password2) {
+    function validateData(email, password, password2, login) {
 
-        if (password === undefined) {
-            return validateLogin(login);
-        };
+        console.log(email, password, password2, login)
+
+        if (login === undefined) {
+            if (password === undefined) {
+                return validateEmail(email);
+            }
+            return validateEmail(email) && validatePassword(password);
+        }
 
         if (password2 === undefined) {
             return validateLogin(login) && validatePassword(password);
         };
 
-        return validateLogin(login) && validatePassword(password) && validatePassword2(password, password2);
+        return validateEmail(email) && validateLogin(login) && validatePassword(password) && validatePassword2(password, password2);
     };
 
     function sendOrRequestData (type, url, data) {
@@ -182,13 +193,15 @@ $(function () {
             success: function (jsonRes) {
                 if(jsonRes.result === 'success'){
                     alert(jsonRes.result, 'success');  
-                    return $('#myModal').modal('toggle');
+                    $('#myModal').modal('toggle');
+                    console.log('window.location.replace(url);')
+                    return
                 } else if(jsonRes.result === 'key'){
                     return console.log(jsonRes.key);
                 };     
 
                 $('.form-control').attr("class", "form-control is-invalid");
-                return alert(jsonRes.result, 'danger');      
+                return alert(jsonRes, 'danger');      
 
 
             },
@@ -198,7 +211,7 @@ $(function () {
         });
 
         req.done(function (response) {
-            return console.log(response.result);
+            return console.log(response.result, response.text);
         });
     };
 
