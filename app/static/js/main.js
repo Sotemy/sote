@@ -61,8 +61,6 @@ $(function () {
 
         $('#resetPassword').on('click', function () {
             setTitleName(this);
-            let key=sendOrRequestData("get", 'auth/get-key');
-            console.log(key);
 
             $('form').remove();
             $(this).hide();
@@ -81,8 +79,6 @@ $(function () {
     });
 
     $('#checkBtn').on('click', function () {
-
-        let url = window.location.href;
 
         let email = $('#emailInput').val();
         let login = $('#loginInput').val();
@@ -193,14 +189,11 @@ $(function () {
             success: function (jsonRes) {
                 if(jsonRes.result === 'success'){
                     alert(jsonRes.result, 'success');  
-                    $('#myModal').modal('toggle');
-                    console.log('window.location.replace(url);')
-                    return
-                } else if(jsonRes.result === 'key'){
-                    return console.log(jsonRes.key);
+                    return $('#myModal').modal('toggle');
                 };     
 
                 $('.form-control').attr("class", "form-control is-invalid");
+                
                 return alert(jsonRes, 'danger');      
 
 
@@ -211,13 +204,13 @@ $(function () {
         });
 
         req.done(function (response) {
-            return console.log(response.result, response.text);
+            return response;
         });
     };
 
     function alert(message, type) {
         let al = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        $('.alertPlace').prepend(al);
+        $('.alertPlace').append(al);
         setTimeout(function(){
             $('.alertPlace').empty();
         },5000);

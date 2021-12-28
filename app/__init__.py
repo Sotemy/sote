@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail 
+from flask_migrate import Migrate
 
 from config import Development
 
@@ -10,6 +11,7 @@ app.config.from_object(Development)
 db=SQLAlchemy(app)
 login_manager = LoginManager(app)
 mail=Mail(app)
+migrate = Migrate(app, db)
 
 from app.main import main
 from app.auth import auth

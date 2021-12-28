@@ -1,11 +1,10 @@
 from flask import request, jsonify, redirect, url_for, render_template
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import check_password_hash
-from flask_mail import Message
 
-from app import db, mail
+from app import db
 from app.auth import auth
-from app.models import User, check_val
+from app.models import User, check_val, Role
 from app.auth.email import send_password_reset_email
 
 @auth.route('/login', methods=['POST'])
@@ -59,21 +58,19 @@ def resetpage():
 
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    else:
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            return redirect(url_for('main.index'))
         user = User.verify_reset_password_token(token)
         if not user:
-            return redirect(url_for('index'))
-        if request.method == 'post':
-            password=request.form['password']
-            user.set_password(password)
-            db.session.commit()
-            print('Your password has been reset.')
-            return redirect('/')
+            return redirect(url_for('main.index'))
+        password=request.form['password']
+        user.set_password(password)
+        db.session.commit()
+        print('Your password has been reset.')
+        return redirect('/')
         
     return render_template('auth/reset_password.html')
-
 
 @auth.route('/logout', methods=['get','post'])
 def logoutUser():
