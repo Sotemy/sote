@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" href="https://appsrv1-147a1.kxcdn.com/adminlte/favicon.ico" type="image/x-icon"> -->
+  <meta name="google-site-verification" content="kCT200-J0rfczENRkJQdYCqsDKkUo3Hvr3KZic_otwU">
+  <title>{% block title %}{% endblock %}</title>
+  {% include 'admin/helpers/css.html' %}
+  {% block head %}{% endblock %}
+</head>
+
+<body class="sidebar-mini" style="height: auto;">
+  <div class="wrapper">
+    {% include 'admin/helpers/navbar.html' %}
+
+    {% include 'admin/helpers/sidebar.html' %}
+
+    <div class="content-wrapper" style="min-height: 1249.31px;">
+
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0 text-dark">Dashboard</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard v1</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      {% block body %}{% endblock %}
+
+    </div>
+  </div>
+  {% include 'admin/helpers/scripts.html' %}
+  {% block scripts %}{% endblock %}
+
+</body>
+
+</html>

@@ -85,8 +85,7 @@ $(function () {
         let password = $('#passwordInput').val();
         let password2 = $('#passwordInput2').val();
         let validornot = validateData(email, password, password2, login);
-        console.log(validornot);
-
+        
         if (validornot === false) {
             return $('.form-control').attr("class", "form-control is-invalid");
         };
@@ -155,7 +154,6 @@ $(function () {
 
     function validatePassword2(password, password2) {
         if (password2 != password) {
-            console.log(password, password2)
             return false;
         };
         return true;
@@ -163,7 +161,6 @@ $(function () {
 
     function validateData(email, password, password2, login) {
 
-        console.log(email, password, password2, login)
 
         if (login === undefined) {
             if (password === undefined) {
@@ -194,7 +191,7 @@ $(function () {
 
                 $('.form-control').attr("class", "form-control is-invalid");
                 
-                return alert(jsonRes, 'danger');      
+                return alert(jsonRes.result +' '+ jsonRes.text, 'danger');      
 
 
             },

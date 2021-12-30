@@ -3,3 +3,6 @@
 **/docs
 *.db
 **/samples
+**/AdminLTE
+/db.py
+/asd.py
