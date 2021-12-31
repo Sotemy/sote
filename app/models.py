@@ -10,7 +10,7 @@ from app import db, login_manager, app
 
 class Role(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(64), nullable=False)
+    name=db.Column(db.String(64), nullable=False, unique=True)
     desc=db.Column(db.String(120), nullable=False)
     users = db.relationship("User", backref="roles")
     # users = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -53,12 +53,6 @@ class User(db.Model, UserMixin):
         if rl:
             self.role=role
             return True
-        return False
-
-    def get_role(self):
-        user=User.query.filter_by(id=self.id).first()
-        if user:
-            return user.role
         return False
 
     def set_password(self, password):

@@ -1,5 +1,6 @@
-from flask_login import login_required
-from flask import render_template
+from flask.json import jsonify
+from flask_login import login_required, current_user
+from flask import render_template, request
 from werkzeug.security import generate_password_hash
 
 from app import db
@@ -11,18 +12,34 @@ from app.utils import admin_required
 @login_required
 @admin_required
 def index():
-
+    print(current_user.role)
     return render_template('admin/index.html')
 
 @adm.route('/tables')
 @login_required
 @admin_required
 def tablesPage():
-    # users=User.query.all() 
     roles=Role.query.all()
-
+    # , roles=roles
     users=User.query.all()
-    return render_template('admin/tables.html', roles=roles, users=users)
+    return render_template('admin/tables.html', users=users, roles=roles)
+
+@adm.route('/create-role', methods=['post'])
+@login_required
+@admin_required
+def createRole():
+    name=request.form['name']
+    desc=request.form['desk']
+    cr=Role.query.filter_by(name='name').first()
+    if cr:
+        return jsonify({'result':'error', 'text':'role exists'})
+    role=Role(name=name, desc=desc)
+    try:
+        db.session.add(role)
+        db.session.commit()
+        return jsonify({'result':'success', 'text':'role added'})
+    except Exception as e:
+        return jsonify({'result':'error', 'text':e})
 
 @adm.route('/reg')
 def reg():
@@ -51,5 +68,4 @@ def reg():
     # db.session.add(user3)
     # db.session.add(user4)
     # db.session.commit()
-
     return 'done'

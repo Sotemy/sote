@@ -9,4 +9,5 @@ def index():
     # role = Role(name='admin', desc='admin')
     # db.session.add(role)
     # db.session.commit()
+    
     return render_template('main/index.html')

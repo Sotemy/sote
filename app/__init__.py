@@ -4,6 +4,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_moment import Moment
+from flask_debugtoolbar import DebugToolbarExtension
 
 from config import Development
 
@@ -14,6 +15,7 @@ login_manager=LoginManager(app)
 mail=Mail(app)
 migrate = Migrate(app, db, render_as_batch=True)
 moment = Moment(app)
+toolbar = DebugToolbarExtension(app)
 
 from app.main import main
 from app.auth import auth

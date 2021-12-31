@@ -10,79 +10,217 @@
 {% block body %}
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Users</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                            
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
-                                        role="grid" aria-describedby="example1_info">
-                                        <thead>
-                                            <tr role="row">
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="ID: activate to sort column ascending">
-                                                    ID</th>
-                                                <th class="sorting_desc" tabindex="0" aria-controls="example1"
-                                                    rowspan="1" colspan="1"
-                                                    aria-label="Login: activate to sort column ascending"
-                                                    aria-sort="descending">Login</th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Active: activate to sort column ascending">
-                                                    Active</th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Last seen: activate to sort column ascending">
-                                                    Last seen</th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Email: activate to sort column ascending">
-                                                    Email</th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Role: activate to sort column ascending">
-                                                    Role</th>
-                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Registered: activate to sort column ascending">Registered
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for user in users %}
-                                            <tr role="row" class="odd">
-                                                <td class="dtr-control" tabindex="0">{{user.id}}</td>
-                                                <td class="sorting_1">{{user.login}}</td>
-                                                <td>{{user.active}}</td>
-                                                <td>{{moment(user.last_seen).fromNow()}}</td>
-                                                <td>{{user.email}}</td>
-                                                <td>{{user.role}}</td>
-                                                <td>{{moment(user.date_reg).format('LLL')}}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+        <div class="alert alert-light">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Users</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="example1"
+                                            class="table table-bordered table-striped dataTable dtr-inline" role="grid"
+                                            aria-describedby="example1_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="sorting" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="ID: activate to sort column ascending">
+                                                        ID</th>
+                                                    <th class="sorting_desc" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Login: activate to sort column ascending"
+                                                        aria-sort="descending">Login</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Active: activate to sort column ascending">
+                                                        Active</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Last seen: activate to sort column ascending">
+                                                        Last seen</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Email: activate to sort column ascending">
+                                                        Email</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Role: activate to sort column ascending">
+                                                        Role</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example1"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Registered: activate to sort column ascending">
+                                                        Registered
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in users %}
+                                                <tr role="row" class="odd">
+                                                    <td class="dtr-control" tabindex="0">{{user.id}}</td>
+                                                    <td class="sorting_1">{{user.login}}</td>
+                                                    <td>{{user.active}}</td>
+                                                    <td>{{moment(user.last_seen).fromNow()}}</td>
+                                                    <td>{{user.email}}</td>
+                                                    <td>{{user.role}}</td>
+                                                    <td>{{moment(user.date_reg).format('LLL')}}</td>
+                                                </tr>
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12 col-md-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-7">
+                                        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card-body -->
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Role</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6"></div>
+                                    <div class="col-sm-12 col-md-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="example2"
+                                            class="table table-bordered table-hover dataTable dtr-inline" role="grid"
+                                            aria-describedby="example2_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="ID: activate to sort column ascending">
+                                                        ID</th>
+                                                    <th class="sorting_asc" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Name: activate to sort column descending"
+                                                        aria-sort="ascending">Name</th>
+                                                    <th class="sorting" tabindex="0" aria-controls="example2"
+                                                        rowspan="1" colspan="1"
+                                                        aria-label="Desc: activate to sort column ascending">
+                                                        Desc</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for role in roles %}
+                                                <tr role="row" class="odd">
+                                                    <td class="dtr-control" tabindex="0">{{role.id}}</td>
+                                                    <td class="sorting_1">{{role.name}}</td>
+                                                    <td>{{role.desc}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
                 </div>
             </div>
+        <div class="row">
+            <div class="col-5">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Example</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="InputLogin1">Login</label>
+                                <input type="text" class="form-control" id="InputLogin1" placeholder="Enter login" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="InputPassword1">Password</label>
+                                <input type="password" class="form-control" id="InputPassword1" placeholder="Password"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="InputEmail1">Email</label>
+                                <input type="email" class="form-control" id="InputEmail1" placeholder="Password" required>
+                            </div>
+                            <label for="selectRole1">Role</label>
+                            <select class="custom-select custom-select" id="selectRole1">
+                                <option selected value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        </div>
+                        <!-- /.card-body -->
+    
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card card-success">
+                    <div class="card-header">
+                      <h3 class="card-title">Create role</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form>
+                      <div class="card-body">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Password</label>
+                          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputFile">File input</label>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="exampleInputFile">
+                              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                            </div>
+                            <div class="input-group-append">
+                              <span class="input-group-text">Upload</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        </div>
+                      </div>
+                      <!-- /.card-body -->
+      
+                      <div class="card-footer">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+            </div>
+        </div>
         </div>
 </section>
 

@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db
 from app.auth import auth
-from app.models import User, check_val
+from app.models import User, check_val, Role
 from app.auth.email import send_password_reset_email
 
 @auth.route('/login', methods=['POST'])
@@ -29,8 +29,10 @@ def registerpage():
         email=request.form['email']
         password=request.form['password']
         password2=request.form['password2']
+        role = request.form['role']
         user=User.query.filter_by(login=login).first()
-
+        if role==None:
+            role='user'
         if user:
             return jsonify({'result':'error', 'text':'exists'})
 
@@ -41,7 +43,7 @@ def registerpage():
             return jsonify({'result':'error', 'text':'password or login problem'})
 
         user=User(login=login, password=password, email=email)
-        if user.set_role('admin'):
+        if user.set_role(role):
             try:
                 db.session.add(user)
                 db.session.commit()
