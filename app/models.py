@@ -1,13 +1,18 @@
 from datetime import datetime
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash
 import jwt
 from time import time
 
 from app import db, login_manager, app
 
-# class Post(db.Model):
-
+class Post(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    title=db.Column(db.String(128), nullable=False)
+    text=db.Column(db.Text, nullable=False)
+    created_at=db.Column(db.DateTime, default=datetime.utcnow())
+    user_name = db.Column(db.Integer, db.ForeignKey('user.login'))
+    
 class Role(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String(64), nullable=False, unique=True)
@@ -25,6 +30,7 @@ class User(db.Model, UserMixin):
     date_reg=db.Column(db.DateTime, default=datetime.utcnow())
     # role = db.relationship("Role", backref="users")
     role = db.Column(db.Integer, db.ForeignKey('role.name'))
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __init__(self, login, password, email):
         self.password=generate_password_hash(password)

@@ -12,9 +12,18 @@ def get_role():
 
 def admin_required(f):
     @wraps(f)
-    def role_wrap(*args, **kwargs):
+    def admin_wrap(*args, **kwargs):
         role=get_role()
         if role == 'admin':
             return f(*args, **kwargs)
-        return abort(Response('Hello World'), 401)
-    return role_wrap
+        return abort(401)
+    return admin_wrap
+
+def user_required(f):
+    @wraps(f)
+    def user_wrap(*args, **kwargs):
+        role=get_role()
+        if role in ['user', 'admin']:
+            return f(*args, **kwargs)
+        return abort(401)
+    return user_wrap

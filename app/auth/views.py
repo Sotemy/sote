@@ -16,7 +16,9 @@ def loginpage():
         if user:
             if check_password_hash(user.password, password):
                 login_user(user)
-                user.toggle_active()
+                u=user.toggle_active()
+                print(u)
+                redirect(url_for('main.index'))
                 return jsonify({'result':'success', 'role':user.role})
             
             return jsonify({'result':'error', 'text':'wrong password', 'user':[user.login, user.password], 'password':generate_password_hash(password)})

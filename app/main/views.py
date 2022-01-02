@@ -1,7 +1,8 @@
-from flask.templating import render_template
+from flask import render_template, request, redirect, jsonify, url_for
+from flask_login import login_required, current_user
 
-from app.models import Role
-from app import db
+from app.models import Post
+from app import db, app
 from app.main import main
 
 @main.route('/')
@@ -9,5 +10,36 @@ def index():
     # role = Role(name='admin', desc='admin')
     # db.session.add(role)
     # db.session.commit()
-    
-    return render_template('main/index.html')
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.created_at.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    total=posts.pages
+    print(total)
+    return render_template("main/index.html", posts=posts.items, pages=posts)
+
+
+
+@main.route('/post/<id>')
+def showPost(id):
+    post=Post.query.filter_by(id=id).first_or_404()
+    return render_template('main/postForm.html', post=post)
+
+@main.route('/post/add', methods=['GET','POST'])
+@login_required
+def createPost():
+    if request.method=='POST':
+        title=request.form['title']
+        text=request.form['text']
+        if len(title)<=2:
+            return jsonify({'result':'erroe', 'text':'short title'})
+        post=Post(title=title, text=text, author=current_user)
+        try:
+            db.session.add(post)
+            db.session.commit()
+            # jsonify({'result':'succes', 'text':'added'})
+            post=Post.query.filter_by(user_name=current_user.login).order_by(Post.created_at.desc()).first()
+            return redirect(url_for('main.showPost', id=post.id))
+        except Exception as e:
+            print(e)
+            return jsonify({'result':'error', 'text':'e'})
+    return render_template('main/addPost.html')

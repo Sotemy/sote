@@ -1,12 +1,39 @@
+<!-- {% import 'main/helpers/macro.html' as pagination%} -->
+
 {% extends 'base.html' %}
 
 {% block header %}{% endblock %}
 
 {% block body %}
 <div class="container">
-    <div class="alert alert-info">
-        <h1>Hi</h1>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat autem eius ipsam? Sed voluptatum autem, dignissimos, voluptates rerum fuga voluptate recusandae reprehenderit fugiat quos, accusamus quae! Amet, rem repudiandae. Quae.</p>
+    {% for post in posts %}
+    <div class="alert alert-light">
+        <h2>{{ post.title }}</h2>
+        {% if post.text|length > 100 %}
+        <p>{{ post.text|truncate(100, False, '...', 0)  }}</p>
+        {% else %}
+        <p>{{ post.text }}</p>
+        {% endif %}
     </div>
+    {% endfor %}
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                {% if pages.has_prev %}
+                <a class="page-link" href="{{url_for('main.index', page=pages.prev_num)}}">Previous</a>
+                {% endif %}
+            </li>
+            {% for page in pages.iter_pages() %}
+            <li class="page-item"><a class="page-link" href="{{url_for('main.index', page=page)}}">{{page}}</a></li>
+            {% endfor %}
+            <li class="page-item">
+                {% if pages.has_next %}
+                <a class="page-link" href="{{url_for('main.index', page=pages.next_num)}}">Next</a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
+
 </div>
 {% endblock %}

@@ -14,6 +14,8 @@ class Config(object):
     MAIL_USERNAME='sote.mail.agent@gmail.com'
     MAIL_PASSWORD='sotetopchik'
 
+    POSTS_PER_PAGE = 5
+
 class Development(Config):
     SECRET_KEY='KDKASsldksad2138293/('
     DEBUG=True
