@@ -2,19 +2,29 @@
 
 {% extends 'base.html' %}
 
-{% block header %}{% endblock %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+{% endblock %}
 
 {% block body %}
 <div class="container">
     {% for post in posts %}
-    <div class="alert alert-light">
-        <h2>{{ post.title }}</h2>
-        {% if post.text|length > 100 %}
-        <p>{{ post.text|truncate(100, False, '...', 0)  }}</p>
-        {% else %}
-        <p>{{ post.text }}</p>
-        {% endif %}
+    <div class="card w-100">
+        <div class="card-body">
+            <h2 class="card-title">{{ post.title }}</h2>
+
+            {% if post.text|length > 30 %}
+                <p class="card-text">{{ post.text|truncate(30, False, '...', 0)  }}</p>
+
+            {% else %}
+
+                <p class="card-text">{{ post.text }}</p>
+            {% endif %}
+
+            <a href="/post/{{post.id}}" class="stretched-link"></a>
+        </div>
     </div>
+    <br>
     {% endfor %}
 
     <nav aria-label="Page navigation example">
@@ -36,4 +46,8 @@
     </nav>
 
 </div>
+<!-- <script src="{{ url_for }}"></script> -->
+
+
+
 {% endblock %}

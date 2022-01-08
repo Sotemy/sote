@@ -20,7 +20,7 @@ login_manager=LoginManager(app)
 mail=Mail(app)
 migrate = Migrate(app, db, render_as_batch=True)
 moment = Moment(app)
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 
 from app.main import main
 from app.auth import auth
@@ -31,7 +31,3 @@ app.register_blueprint(main)
 app.register_blueprint(admin)
 
 db.create_all()
-
-print(app.url_map)
-
-from app.models import User

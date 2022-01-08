@@ -1,20 +1,24 @@
 from flask import render_template, request, redirect, jsonify, url_for
 from flask_login import login_required, current_user
+from werkzeug.security import generate_password_hash
 
-from app.models import Post
+from app.models import Post, User, Role
 from app import db, app
 from app.main import main
 
 @main.route('/')
 def index():
-    # role = Role(name='admin', desc='admin')
+    # role = Role(name='user', desc='user')
     # db.session.add(role)
+    # db.session.commit()
+    # admin=User(login='sotemy', email='dmitrii@lechenko.me', password='sotemy1337')
+    # admin.set_role('admin')
+    # db.session.add(admin)
     # db.session.commit()
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.created_at.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], False)
-    total=posts.pages
-    print(total)
+
     return render_template("main/index.html", posts=posts.items, pages=posts)
 
 

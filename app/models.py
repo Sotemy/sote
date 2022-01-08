@@ -1,10 +1,20 @@
 from datetime import datetime
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 import jwt
 from time import time
 
 from app import db, login_manager, app
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.String(140))
+    sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)
 
 class Post(db.Model):
     id=db.Column(db.Integer, primary_key=True)
@@ -12,7 +22,29 @@ class Post(db.Model):
     text=db.Column(db.Text, nullable=False)
     created_at=db.Column(db.DateTime, default=datetime.utcnow())
     user_name = db.Column(db.Integer, db.ForeignKey('user.login'))
-    
+    tags = db.Column(db.String, db.ForeignKey('tag.name'))
+    category= db.Column(db.String, db.ForeignKey('category.name'))
+
+    def set_tag(self, tag):
+        new_tag=Tag.query.filter_by(name=tag).first()
+        if new_tag:
+            self.tags.append(new_tag)
+            db.session.commit()
+            return True
+        return False
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    cats = db.Column(db.Integer, db.ForeignKey('category.name'))
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    tags=db.relationship("Tag", backref="categories")
+
+
 class Role(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String(64), nullable=False, unique=True)
@@ -28,9 +60,15 @@ class User(db.Model, UserMixin):
     email=db.Column(db.String(120), nullable=False)
     password=db.Column(db.String(256), nullable=False)
     date_reg=db.Column(db.DateTime, default=datetime.utcnow())
-    # role = db.relationship("Role", backref="users")
     role = db.Column(db.Integer, db.ForeignKey('role.name'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    messages_sent = db.relationship('Message',
+                                    foreign_keys='Message.sender_id',
+                                    backref='author', lazy='dynamic')
+    messages_received = db.relationship('Message',
+                                        foreign_keys='Message.recipient_id',
+                                        backref='recipient', lazy='dynamic')
+    last_message_read_time = db.Column(db.DateTime)
 
     def __init__(self, login, password, email):
         self.password=generate_password_hash(password)
@@ -79,13 +117,18 @@ class User(db.Model, UserMixin):
             return print('failed')
         return User.query.get(id)
 
+    def new_messages(self):
+        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+        return Message.query.filter_by(recipient=self).filter(
+            Message.timestamp > last_read_time).count()
+
 def check_val(login, password):
     if len(login) < 5:
         return False
             
-    if len(password) < 8:
+    if len(password) < 5:
         return False
-    
+   
     return True
 
 @login_manager.user_loader

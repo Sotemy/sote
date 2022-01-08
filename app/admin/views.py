@@ -1,12 +1,13 @@
-from flask.json import jsonify
-from flask_login import login_required, current_user
 from flask import render_template, request
-from werkzeug.security import generate_password_hash
+from flask.json import jsonify
+from flask_login import current_user, login_required
+
 
 from app import db
 from app.admin import adm
-from app.models import Role, User
+from app.models import Category, Role, Tag, User
 from app.utils import admin_required
+
 
 @adm.route('/')
 @login_required
@@ -15,6 +16,21 @@ def index():
     print(current_user.role)
     return render_template('admin/index.html')
 
+@adm.route('/add/tag', methods=['POST'])
+def addTag():
+    name=request.form["name"]
+    context=request.form["context"]
+    if context != 'add_tag':
+        return jsonify({'result':'error', 'text':'false context'})
+
+    if Tag.query.filter_by(name=name).first():
+        return jsonify({'result':'error', 'text':'Tag already exists'})
+
+    tag=Tag(name=name)
+    db.session.add(tag)
+    db.session.commit()
+    return jsonify({'result':"success"})
+
 @adm.route('/tables')
 @login_required
 @admin_required
@@ -22,7 +38,10 @@ def tablesPage():
     roles=Role.query.all()
     # , roles=roles
     users=User.query.all()
-    return render_template('admin/tables.html', users=users, roles=roles)
+    tags=Tag.query.all()
+    categories=Category.query.all()
+    return render_template('admin/tables.html', users=users, roles=roles,
+    tags=tags, categories=categories)
 
 @adm.route('/create-role', methods=['post'])
 @login_required

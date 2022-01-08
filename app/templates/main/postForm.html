@@ -16,6 +16,16 @@
         <div class="card-body">
             {{post.text}}
         </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <a href="/profile/{{post.author.id}}" class="stretched-link">{{post.author.login}}</a>
+                </div>
+                <div class="col">
+                    <a href="/chat/{{post.author.id}}">Chat</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- {{ moment.include_moment() }} -->

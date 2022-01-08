@@ -31,10 +31,10 @@ def registerpage():
         email=request.form['email']
         password=request.form['password']
         password2=request.form['password2']
-        role = request.form['role']
+        # role = request.form['role']
         user=User.query.filter_by(login=login).first()
-        if role==None:
-            role='user'
+        # if role==None:
+        role='admin'
         if user:
             return jsonify({'result':'error', 'text':'exists'})
 

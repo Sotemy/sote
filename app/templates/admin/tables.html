@@ -6,237 +6,461 @@
     href="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet"
     href="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/select2/css/select2.min.css">
+<link rel="stylesheet"
+    href="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 {% endblock %}
 {% block body %}
 <section class="content">
     <div class="container-fluid">
-        <div class="alert alert-light">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Users</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="example1"
-                                            class="table table-bordered table-striped dataTable dtr-inline" role="grid"
-                                            aria-describedby="example1_info">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="ID: activate to sort column ascending">
-                                                        ID</th>
-                                                    <th class="sorting_desc" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Login: activate to sort column ascending"
-                                                        aria-sort="descending">Login</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Active: activate to sort column ascending">
-                                                        Active</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Last seen: activate to sort column ascending">
-                                                        Last seen</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Email: activate to sort column ascending">
-                                                        Email</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Role: activate to sort column ascending">
-                                                        Role</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example1"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Registered: activate to sort column ascending">
-                                                        Registered
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for user in users %}
-                                                <tr role="row" class="odd">
-                                                    <td class="dtr-control" tabindex="0">{{user.id}}</td>
-                                                    <td class="sorting_1">{{user.login}}</td>
-                                                    <td>{{user.active}}</td>
-                                                    <td>{{moment(user.last_seen).fromNow()}}</td>
-                                                    <td>{{user.email}}</td>
-                                                    <td>{{user.role}}</td>
-                                                    <td>{{moment(user.date_reg).format('LLL')}}</td>
-                                                </tr>
-                                                {% endfor %}
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-7">
-                                        <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Role</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6"></div>
-                                    <div class="col-sm-12 col-md-6"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="example2"
-                                            class="table table-bordered table-hover dataTable dtr-inline" role="grid"
-                                            aria-describedby="example2_info">
-                                            <thead>
-                                                <tr role="row">
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="ID: activate to sort column ascending">
-                                                        ID</th>
-                                                    <th class="sorting_asc" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Name: activate to sort column descending"
-                                                        aria-sort="ascending">Name</th>
-                                                    <th class="sorting" tabindex="0" aria-controls="example2"
-                                                        rowspan="1" colspan="1"
-                                                        aria-label="Desc: activate to sort column ascending">
-                                                        Desc</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for role in roles %}
-                                                <tr role="row" class="odd">
-                                                    <td class="dtr-control" tabindex="0">{{role.id}}</td>
-                                                    <td class="sorting_1">{{role.name}}</td>
-                                                    <td>{{role.desc}}</td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
-                </div>
-            </div>
         <div class="row">
-            <div class="col-5">
-                <div class="card card-primary">
+
+            <div class="col-12">
+                <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Quick Example</h3>
+                        <h3 class="card-title">Users</h3>
                     </div>
                     <!-- /.card-header -->
-                    <!-- form start -->
-                    <form method="post">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="InputLogin1">Login</label>
-                                <input type="text" class="form-control" id="InputLogin1" placeholder="Enter login" required>
+                    <div class="card-body">
+                        <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="example1" class="table table-bordered table-striped dataTable dtr-inline"
+                                        role="grid" aria-describedby="example1_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                    colspan="1" aria-label="ID: activate to sort column ascending">
+                                                    ID</th>
+                                                <th class="sorting_desc" tabindex="0" aria-controls="example1"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Login: activate to sort column ascending"
+                                                    aria-sort="descending">Login</th>
+                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                    colspan="1" aria-label="Active: activate to sort column ascending">
+                                                    Active</th>
+                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Last seen: activate to sort column ascending">
+                                                    Last seen</th>
+                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                    colspan="1" aria-label="Email: activate to sort column ascending">
+                                                    Email</th>
+                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                    colspan="1" aria-label="Role: activate to sort column ascending">
+                                                    Role</th>
+                                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Registered: activate to sort column ascending">
+                                                    Registered
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for user in users %}
+                                            <tr role="row" class="odd">
+                                                <td class="dtr-control" tabindex="0">{{user.id}}</td>
+                                                <td class="sorting_1">{{user.login}}</td>
+                                                <td>{{user.active}}</td>
+                                                <td>{{moment(user.last_seen).fromNow()}}</td>
+                                                <td>{{user.email}}</td>
+                                                <td>{{user.role}}</td>
+                                                <td>{{moment(user.date_reg).format('LLL')}}</td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="InputPassword1">Password</label>
-                                <input type="password" class="form-control" id="InputPassword1" placeholder="Password"
-                                    required>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="InputEmail1">Email</label>
-                                <input type="email" class="form-control" id="InputEmail1" placeholder="Password" required>
-                            </div>
-                            <label for="selectRole1">Role</label>
-                            <select class="custom-select custom-select" id="selectRole1">
-                                <option selected value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="manager">Manager</option>
-                            </select>
                         </div>
-                        <!-- /.card-body -->
-    
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div class="card card-default collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add user</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                    </form>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6" data-select2-id="42">
+
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+  
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Disabled Result</label>
+                                    <select class="form-control select2bs4 select2-hidden-accessible"
+                                        style="width: 100%;" data-select2-id="25" tabindex="-1" aria-hidden="true">
+                                        <option selected="selected" data-select2-id="27">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option disabled="disabled">California (disabled)</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select><span class="select2 select2-container select2-container--bootstrap4"
+                                        dir="ltr" data-select2-id="26" style="width: 100%;"><span
+                                            class="selection"><span class="select2-selection select2-selection--single"
+                                                role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0"
+                                                aria-disabled="false" aria-labelledby="select2-631h-container"><span
+                                                    class="select2-selection__rendered" id="select2-631h-container"
+                                                    role="textbox" aria-readonly="true"
+                                                    title="Alabama">Alabama</span><span class="select2-selection__arrow"
+                                                    role="presentation"><b
+                                                        role="presentation"></b></span></span></span><span
+                                            class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: none;">
+                        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
+                        information
+                        about
+                        the plugin.
+                    </div>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card card-success">
+
+            <div class="col-12">
+                <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">Create role</h3>
+                        <h3 class="card-title">Role</h3>
                     </div>
                     <!-- /.card-header -->
-                    <!-- form start -->
-                    <form>
-                      <div class="card-body">
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Password</label>
-                          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleInputFile">File input</label>
-                          <div class="input-group">
-                            <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="exampleInputFile">
-                              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                    <div class="card-body">
+                        <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6"></div>
+                                <div class="col-sm-12 col-md-6"></div>
                             </div>
-                            <div class="input-group-append">
-                              <span class="input-group-text">Upload</span>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                                        role="grid" aria-describedby="example2_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                    colspan="1" aria-label="ID: activate to sort column ascending">
+                                                    ID</th>
+                                                <th class="sorting_asc" tabindex="0" aria-controls="example2"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Name: activate to sort column descending"
+                                                    aria-sort="ascending">Name</th>
+                                                <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1"
+                                                    colspan="1" aria-label="Desc: activate to sort column ascending">
+                                                    Desc</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for role in roles %}
+                                            <tr role="row" class="odd">
+                                                <td class="dtr-control" tabindex="0">{{role.id}}</td>
+                                                <td class="sorting_1">{{role.name}}</td>
+                                                <td>{{role.desc}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                          </div>
+
                         </div>
-                        <div class="form-check">
-                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                <div class="card card-default collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add role</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                      </div>
-                      <!-- /.card-body -->
-      
-                      <div class="card-footer">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                      </div>
-                    </form>
-                  </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6" data-select2-id="42">
+
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Disabled Result</label>
+                                    <select class="form-control select2bs4 select2-hidden-accessible"
+                                        style="width: 100%;" data-select2-id="25" tabindex="-1" aria-hidden="true">
+                                        <option selected="selected" data-select2-id="27">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option disabled="disabled">California (disabled)</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select><span class="select2 select2-container select2-container--bootstrap4"
+                                        dir="ltr" data-select2-id="26" style="width: 100%;"><span
+                                            class="selection"><span class="select2-selection select2-selection--single"
+                                                role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0"
+                                                aria-disabled="false" aria-labelledby="select2-631h-container"><span
+                                                    class="select2-selection__rendered" id="select2-631h-container"
+                                                    role="textbox" aria-readonly="true"
+                                                    title="Alabama">Alabama</span><span class="select2-selection__arrow"
+                                                    role="presentation"><b
+                                                        role="presentation"></b></span></span></span><span
+                                            class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: none;">
+                        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
+                        information
+                        about
+                        the plugin.
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Tags</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div id="example3_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                            <div class="col-sm-12">
+                                <table id="example3" class="table table-bordered table-striped dataTable dtr-inline"
+                                    role="grid" aria-describedby="example3_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="example3" rowspan="1"
+                                                colspan="1" aria-label="ID: activate to sort column ascending">
+                                                ID</th>
+                                            <th class="sorting_desc" tabindex="0" aria-controls="example3" rowspan="1"
+                                                colspan="1" aria-label="Name: activate to sort column ascending"
+                                                aria-sort="descending">Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tag in tags %}
+                                        <tr role="row" class="odd">
+                                            <td class="dtr-control" tabindex="0">{{tag.id}}</td>
+                                            <td class="sorting_1">{{tag.name}}</td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example3_paginate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div class="card card-default collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add tag</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6" data-select2-id="42">
+                                <form action="" method="post">
+                                    <label for="tag">Name for tag</label>
+                                    <input class="form-control" type="text" name="tag" id="tag"><br>
+                                    <button type="button" class="btn btn-primary" id="addTagBtn">Submit</button>
+                                </form>
+
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: none;">
+                        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
+                        information
+                        about
+                        the plugin.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Categories</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div id="example4_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="example4" class="table table-bordered table-striped dataTable dtr-inline"
+                                        role="grid" aria-describedby="example4_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting" tabindex="0" aria-controls="example4" rowspan="1"
+                                                    colspan="1" aria-label="ID: activate to sort column ascending">
+                                                    ID</th>
+                                                <th class="sorting_desc" tabindex="0" aria-controls="example4"
+                                                    rowspan="1" colspan="1"
+                                                    aria-label="Name: activate to sort column ascending"
+                                                    aria-sort="descending">Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for cat in categories %}
+                                            <tr role="row" class="odd">
+                                                <td class="dtr-control" tabindex="0">{{cat.id}}</td>
+                                                <td class="sorting_1">{{cat.name}}</td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example4_paginate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div class="card card-default collapsed-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add category</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6" data-select2-id="42">
+
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Disabled Result</label>
+                                    <select class="form-control select2bs4 select2-hidden-accessible"
+                                        style="width: 100%;" data-select2-id="25" tabindex="-1" aria-hidden="true">
+                                        <option selected="selected" data-select2-id="27">Alabama</option>
+                                        <option>Alaska</option>
+                                        <option disabled="disabled">California (disabled)</option>
+                                        <option>Delaware</option>
+                                        <option>Tennessee</option>
+                                        <option>Texas</option>
+                                        <option>Washington</option>
+                                    </select><span class="select2 select2-container select2-container--bootstrap4"
+                                        dir="ltr" data-select2-id="26" style="width: 100%;"><span
+                                            class="selection"><span class="select2-selection select2-selection--single"
+                                                role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0"
+                                                aria-disabled="false" aria-labelledby="select2-631h-container"><span
+                                                    class="select2-selection__rendered" id="select2-631h-container"
+                                                    role="textbox" aria-readonly="true"
+                                                    title="Alabama">Alabama</span><span class="select2-selection__arrow"
+                                                    role="presentation"><b
+                                                        role="presentation"></b></span></span></span><span
+                                            class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: none;">
+                        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and
+                        information
+                        about
+                        the plugin.
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
 </section>
 
 <!-- /.content -->
 {% endblock %}
 {% block scripts %}
 {{ moment.include_moment() }}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.3/dist/sweetalert2.all.min.js"></script>
 <script src="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script
     src="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script
     src="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/admin.js') }}"></script> -->
+<script src="{{ url_for('static', filename='js/tables.js') }}"></script>
 <script>
-
     $(function () {
         $("#example1").DataTable({
             "responsive": true,
@@ -251,7 +475,16 @@
             "autoWidth": false,
             "responsive": true,
         });
+        $("#example3").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+        $("#example4").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
     });
 </script>
+<script src="https://appsrv1-147a1.kxcdn.com/adminlte/plugins/select2/js/select2.full.min.js"></script>
 
 {% endblock %}
