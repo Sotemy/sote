@@ -41,7 +41,7 @@ def createPost():
             db.session.add(post)
             db.session.commit()
             # jsonify({'result':'succes', 'text':'added'})
-            post=Post.query.filter_by(user_name=current_user.login).order_by(Post.created_at.desc()).first()
+            post=Post.query.filter_by(user_name=current_user.login).order_by(Post.id.desc()).first()
             return redirect(url_for('main.showPost', id=post.id))
         except Exception as e:
             print(e)
