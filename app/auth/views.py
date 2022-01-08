@@ -33,10 +33,6 @@ def registerpage():
         password2=request.form['password2']
         # role = request.form['role']
         user=User.query.filter_by(login=login).first()
-        # if role==None:
-        role='admin'
-        if user:
-            return jsonify({'result':'error', 'text':'exists'})
 
         if password!=password2:
             return jsonify({'result':'error', 'text':'unequal pass'})
@@ -45,7 +41,7 @@ def registerpage():
             return jsonify({'result':'error', 'text':'password or login problem'})
 
         user=User(login=login, password=password, email=email)
-        if user.set_role(role):
+        if user.set_role('user'):
             try:
                 db.session.add(user)
                 db.session.commit()

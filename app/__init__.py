@@ -6,6 +6,7 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_debugtoolbar import DebugToolbarExtension
 from OpenSSL import SSL
+from app.models import Role, User
 
 from config import Development
 
@@ -31,3 +32,19 @@ app.register_blueprint(main)
 app.register_blueprint(admin)
 
 db.create_all()
+
+if Role.query.filter_by(name='admin').first() == None:
+    role=Role(name='admin', desc='admin')
+    db.session.add(role)
+    db.session.commit()
+
+if User.query.filter_by(role='admin').first() == None:
+    user=User(login='admin', password='123456', email='dmitrii@lechenko.me')
+    user.set_role('admin')
+    db.session.add(user)
+    db.session.commit()
+
+if Role.query.filter_by(name='user').first() == None:
+    role=Role(name='user', desc='user')
+    db.session.add(role)
+    db.session.commit()
