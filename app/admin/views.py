@@ -106,3 +106,4 @@ def startLogin():
         role=Role(name='user', desc='user')
         db.session.add(role)
         db.session.commit()
+    return 'done'
