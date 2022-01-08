@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 import jwt
 from time import time
 
-from app import db, login_manager, app
+from . import db, login_manager, app
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
