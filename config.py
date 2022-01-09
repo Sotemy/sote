@@ -9,7 +9,6 @@ class Config(object):
     MAIL_SUPPRESS_SEND = False
     TESTING = False
     MAIL_ASCII_ATTACHMENTS =False
-
     MAIL_DEFAULT_SENDER='sote.mail.agent@gmail.com'
     MAIL_SERVER= 'smtp.gmail.com'
     MAIL_PORT= 587
@@ -17,7 +16,6 @@ class Config(object):
     MAIL_USE_SSL= False
     MAIL_USERNAME='sote.mail.agent@gmail.com'
     MAIL_PASSWORD='sotetopchik'
-
     POSTS_PER_PAGE = 5
 
 class Development(Config):
