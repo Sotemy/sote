@@ -40,6 +40,7 @@ class Development(Config):
     TESTING=True
 
 class Production(Config):
+    DEBUG=os.environ.get('DEBUG')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
         'postgres://', 'postgresql://') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
@@ -59,5 +60,4 @@ class Production(Config):
     MAIL_USERNAME=os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD=os.environ.get('MAIL_PASS')
     SECRET_KEY=os.environ.get('SECRET_KEY')
-    DEBUG=os.environ.get('DEBUG')
     POSTS_PER_PAGE = 25
