@@ -7,7 +7,7 @@
 {% block body %}
 <div class="container">
     <br>
-    <a href="/"><i class="fas fa-arrow-left"></i>Main page</a>
+    <a href="/" class="btn btn-light"><i class="fas fa-arrow-left"></i>Main page</a>
     <br>
     <div class="card">
         <div class="card-header">
@@ -19,10 +19,10 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    <a href="/profile/{{post.author.id}}" class="stretched-link">{{post.author.login}}</a>
+                    <a href="/profile/{{post.author.id}}">{{post.author.login}}</a>
                 </div>
                 <div class="col">
-                    <a href="/chat/{{post.author.id}}">Chat</a>
+                    <a href="/chat/{{post.id}}">Chat</a>
                 </div>
             </div>
         </div>

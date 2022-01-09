@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, jsonify, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 
-from app.models import Post, User, Role
+from app.models import Category, Post, User, Role
 from app import db, app
 from app.main import main
 
@@ -46,4 +46,5 @@ def createPost():
         except Exception as e:
             print(e)
             return jsonify({'result':'error', 'text':'e'})
-    return render_template('main/addPost.html')
+    cats=Category.query.all()
+    return render_template('main/addPost.html', cats=cats)

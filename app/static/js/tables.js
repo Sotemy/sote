@@ -2,7 +2,12 @@ $(function () {
 
     $('#addTagBtn').on('click', function() {
         let name=$('#tag').val()
-        sendReq("/admin/add/tag", {name:name, context:'add_tag'})
+        sendReq("/admin/add", {name:name, context:'add_tag'})
+    })
+
+    $('#addCatBtn').on('click', function() {
+        let name=$('#cat').val()
+        sendReq("/admin/add", {name:name, context:'add_cat'})
     })
 
     function sendReq(url, data) {

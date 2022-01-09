@@ -11,6 +11,7 @@ class Message(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     body = db.Column(db.String(140))
+    item=db.Column(db.String, db.ForeignKey('post.id'))
     sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):

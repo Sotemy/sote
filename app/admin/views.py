@@ -16,20 +16,28 @@ def index():
     print(current_user.role)
     return render_template('admin/index.html')
 
-@adm.route('/add/tag', methods=['POST'])
+@adm.route('/add', methods=['POST'])
 def addTag():
     name=request.form["name"]
     context=request.form["context"]
-    if context != 'add_tag':
-        return jsonify({'result':'error', 'text':'false context'})
+    if context == 'add_tag':
+        if Tag.query.filter_by(name=name).first():
+            return jsonify({'result':'error', 'text':'Tag already exists'})
+        tag=Tag(name=name)
+        db.session.add(tag)
+        db.session.commit()
+        return jsonify({'result':"success"})
 
-    if Tag.query.filter_by(name=name).first():
-        return jsonify({'result':'error', 'text':'Tag already exists'})
+    if context == 'add_cat':
+        if Category.query.filter_by(name=name).first():
+            return jsonify({'result':'error', 'text':'Tag already exists'})
+        tag=Category(name=name)
+        db.session.add(tag)
+        db.session.commit()
+        return jsonify({'result':"success"})
+    
 
-    tag=Tag(name=name)
-    db.session.add(tag)
-    db.session.commit()
-    return jsonify({'result':"success"})
+
 
 @adm.route('/tables')
 @login_required
