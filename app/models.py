@@ -11,7 +11,7 @@ class Message(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     body = db.Column(db.String(140))
-    item=db.Column(db.String, db.ForeignKey('post.id'))
+    item=db.Column(db.String(140), db.ForeignKey('post.id'))
     sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
@@ -23,8 +23,8 @@ class Post(db.Model):
     text=db.Column(db.Text, nullable=False)
     created_at=db.Column(db.DateTime, default=datetime.utcnow())
     user_name = db.Column(db.Integer, db.ForeignKey('user.login'))
-    tags = db.Column(db.String, db.ForeignKey('tag.name'))
-    category= db.Column(db.String, db.ForeignKey('category.name'))
+    tags = db.Column(db.String(140), db.ForeignKey('tag.name'))
+    category= db.Column(db.String(140), db.ForeignKey('category.name'))
 
     def set_tag(self, tag):
         new_tag=Tag.query.filter_by(name=tag).first()
@@ -61,7 +61,7 @@ class User(db.Model, UserMixin):
     email=db.Column(db.String(120), nullable=False)
     password=db.Column(db.String(256), nullable=False)
     date_reg=db.Column(db.DateTime, default=datetime.utcnow())
-    role = db.Column(db.Integer, db.ForeignKey('role.name'))
+    role = db.Column(db.String, db.ForeignKey('role.name'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     messages_sent = db.relationship('Message',
                                     foreign_keys='Message.sender_id',
