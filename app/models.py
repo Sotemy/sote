@@ -37,13 +37,13 @@ class Post(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    cats = db.Column(db.Integer, db.ForeignKey('category.name'))
+    # cats = db.Column(db.Integer, db.ForeignKey('category.name'))
 
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    tags=db.relationship("Tag", backref="categories")
+    # tags=db.relationship("Tag", backref="categories")
 
 
 class Role(db.Model):
