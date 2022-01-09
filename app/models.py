@@ -7,53 +7,6 @@ from time import time
 
 from app import db, login_manager, app
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    body = db.Column(db.String(140))
-    item=db.Column(db.String(140), db.ForeignKey('post.id'))
-    sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Message {}>'.format(self.body)
-
-class Post(db.Model):
-    id=db.Column(db.Integer, primary_key=True, unique=True)
-    title=db.Column(db.String(128), nullable=False)
-    text=db.Column(db.Text, nullable=False)
-    created_at=db.Column(db.DateTime, default=datetime.utcnow())
-    user_name = db.Column(db.String(64), db.ForeignKey('user.login'))
-    tags = db.Column(db.String(140), db.ForeignKey('tag.name'))
-    category= db.Column(db.String(140), db.ForeignKey('category.name'))
-
-    def set_tag(self, tag):
-        new_tag=Tag.query.filter_by(name=tag).first()
-        if new_tag:
-            self.tags.append(new_tag)
-            db.session.commit()
-            return True
-        return False
-
-class Tag(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    name = db.Column(db.String(64), unique=True)
-    cats = db.Column(db.String, db.ForeignKey('category.name'))
-
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    name = db.Column(db.String(64), unique=True)
-    tags=db.relationship("Tag", backref="categories")
-
-
-class Role(db.Model):
-    id=db.Column(db.Integer, primary_key=True, unique=True)
-    name=db.Column(db.String(64), nullable=False, unique=True)
-    desc=db.Column(db.String(120), nullable=False)
-    users = db.relationship("User", backref="roles")
-    # users = db.Column(db.Integer, db.ForeignKey('user.id'))
-
 class User(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True, unique=True)
     login=db.Column(db.String(64), nullable=False)
@@ -123,6 +76,54 @@ class User(db.Model, UserMixin):
         last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.String(140))
+    item=db.Column(db.String(140), db.ForeignKey('post.id'))
+    sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)
+
+class Post(db.Model):
+    id=db.Column(db.Integer, primary_key=True, unique=True)
+    title=db.Column(db.String(128), nullable=False)
+    text=db.Column(db.Text, nullable=False)
+    created_at=db.Column(db.DateTime, default=datetime.utcnow())
+    user_name = db.Column(db.String(64), db.ForeignKey('user.login'))
+    tags = db.Column(db.String(140), db.ForeignKey('tag.name'))
+    category= db.Column(db.String(140), db.ForeignKey('category.name'))
+
+    def set_tag(self, tag):
+        new_tag=Tag.query.filter_by(name=tag).first()
+        if new_tag:
+            self.tags.append(new_tag)
+            db.session.commit()
+            return True
+        return False
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    name = db.Column(db.String(64), unique=True)
+    cats = db.Column(db.String, db.ForeignKey('category.name'))
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    name = db.Column(db.String(64), unique=True)
+    tags=db.relationship("Tag", backref="categories")
+
+
+class Role(db.Model):
+    id=db.Column(db.Integer, primary_key=True, unique=True)
+    name=db.Column(db.String(64), nullable=False, unique=True)
+    desc=db.Column(db.String(120), nullable=False)
+    users = db.relationship("User", backref="roles")
+    # users = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 def check_val(login, password):
     if len(login) < 5:
