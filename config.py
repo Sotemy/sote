@@ -45,16 +45,19 @@ class Production(Config):
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS=os.environ.get('TRACK_MOD')
     ADMINS=os.environ.get('ADMINS')
+    MAIL_DEBUG=os.environ.get('MAIL_DEBUG')
     MAIL_SUPPRESS_SEND = os.environ.get('MAIL_SUPPRESS_SEND')
     TESTING = os.environ.get('TESTING')
     MAIL_ASCII_ATTACHMENTS =os.environ.get('ATTACH')
 
+    
     MAIL_DEFAULT_SENDER=os.environ.get('SENDER')
     MAIL_SERVER= os.environ.get('SERVER')
-    MAIL_PORT= os.environ.get('MAIL_PORT')
+    MAIL_PORT= int(os.environ.get('MAIL_PORT') or 25)
     MAIL_USE_TLS= os.environ.get('TLS')
     MAIL_USE_SSL= os.environ.get('SSL')
     MAIL_USERNAME=os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD=os.environ.get('MAIL_PASS')
     SECRET_KEY=os.environ.get('SECRET_KEY')
     DEBUG=os.environ.get('DEBUG')
+    POSTS_PER_PAGE = 25
