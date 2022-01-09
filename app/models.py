@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import unique
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 import jwt
@@ -7,7 +8,7 @@ from time import time
 from app import db, login_manager, app
 
 class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     body = db.Column(db.String(140))
@@ -18,11 +19,11 @@ class Message(db.Model):
         return '<Message {}>'.format(self.body)
 
 class Post(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
+    id=db.Column(db.Integer, primary_key=True, unique=True)
     title=db.Column(db.String(128), nullable=False)
     text=db.Column(db.Text, nullable=False)
     created_at=db.Column(db.DateTime, default=datetime.utcnow())
-    user_name = db.Column(db.Integer, db.ForeignKey('user.login'))
+    user_name = db.Column(db.String(64), db.ForeignKey('user.login'))
     tags = db.Column(db.String(140), db.ForeignKey('tag.name'))
     category= db.Column(db.String(140), db.ForeignKey('category.name'))
 
@@ -35,26 +36,26 @@ class Post(db.Model):
         return False
 
 class Tag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(64), unique=True)
-    # cats = db.Column(db.Integer, db.ForeignKey('category.name'))
+    cats = db.Column(db.String, db.ForeignKey('category.name'))
 
 
 class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(64), unique=True)
-    # tags=db.relationship("Tag", backref="categories")
+    tags=db.relationship("Tag", backref="categories")
 
 
 class Role(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
+    id=db.Column(db.Integer, primary_key=True, unique=True)
     name=db.Column(db.String(64), nullable=False, unique=True)
     desc=db.Column(db.String(120), nullable=False)
     users = db.relationship("User", backref="roles")
     # users = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class User(db.Model, UserMixin):
-    id=db.Column(db.Integer, primary_key=True)
+    id=db.Column(db.Integer, primary_key=True, unique=True)
     login=db.Column(db.String(64), nullable=False)
     active=db.Column(db.Boolean, nullable=False)
     last_seen=db.Column(db.DateTime, nullable=False)
