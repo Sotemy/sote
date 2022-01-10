@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import unique
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 import jwt
@@ -9,7 +8,7 @@ from app import db, login_manager, app
 
 class User(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True, unique=True)
-    login=db.Column(db.String(64), nullable=False)
+    login=db.Column(db.String(64), nullable=False, unique=True)
     active=db.Column(db.Boolean, nullable=False)
     last_seen=db.Column(db.DateTime, nullable=False)
     email=db.Column(db.String(120), nullable=False)
@@ -77,17 +76,6 @@ class User(db.Model, UserMixin):
         return Message.query.filter_by(recipient=self).filter(
             Message.timestamp > last_read_time).count()
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    body = db.Column(db.String(140))
-    item=db.Column(db.String(140), db.ForeignKey('post.id'))
-    sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Message {}>'.format(self.body)
-
 class Post(db.Model):
     id=db.Column(db.Integer, primary_key=True, unique=True)
     title=db.Column(db.String(128), nullable=False)
@@ -104,6 +92,17 @@ class Post(db.Model):
             db.session.commit()
             return True
         return False
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    body = db.Column(db.String(140))
+    item=db.Column(db.String(140), db.ForeignKey('post.id'))
+    sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
