@@ -16,13 +16,6 @@ class User(db.Model, UserMixin):
     date_reg=db.Column(db.DateTime, default=datetime.utcnow())
     role = db.Column(db.String, db.ForeignKey('role.name'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
-    messages_sent = db.relationship('Message',
-                                    foreign_keys='Message.sender_id',
-                                    backref='author', lazy='dynamic')
-    messages_received = db.relationship('Message',
-                                        foreign_keys='Message.recipient_id',
-                                        backref='recipient', lazy='dynamic')
-    last_message_read_time = db.Column(db.DateTime)
 
     def __init__(self, login, password, email):
         self.password=generate_password_hash(password)
@@ -71,11 +64,6 @@ class User(db.Model, UserMixin):
             return print('failed')
         return User.query.get(id)
 
-    def new_messages(self):
-        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
-        return Message.query.filter_by(recipient=self).filter(
-            Message.timestamp > last_read_time).count()
-
 class Post(db.Model):
     id=db.Column(db.Integer, primary_key=True, unique=True)
     title=db.Column(db.String(128), nullable=False)
@@ -92,17 +80,6 @@ class Post(db.Model):
             db.session.commit()
             return True
         return False
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    body = db.Column(db.String(140))
-    item=db.Column(db.String(140), db.ForeignKey('post.id'))
-    sent_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Message {}>'.format(self.body)
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)

@@ -17,16 +17,16 @@ def allDialogs():
 def userDialog(id):
     return render_template('main/chat/userDialog.html')
 
-@userchat.route('/chat/send_message/<item_id>', methods=['POST'])
-@login_required
-def send_message(item_id):
-    it = Post.query.filter_by(id=item_id).first_or_404()
-    if it:
-        if request.method=='POST':
-            message=request.form['message']
-            msg = Message(author=current_user, recipient=it.author,
-            body=message, item=item_id)
-            db.session.add(msg)
-            db.session.commit()
-            return jsonify({'result':'success', 'text':message})
-    return jsonify({'result':'error', 'text':'user not exist'})
+# @userchat.route('/chat/send_message/<item_id>', methods=['POST'])
+# @login_required
+# def send_message(item_id):
+#     it = Post.query.filter_by(id=item_id).first_or_404()
+#     if it:
+#         if request.method=='POST':
+#             message=request.form['message']
+#             msg = Message(author=current_user, recipient=it.author,
+#             body=message, item=item_id)
+#             db.session.add(msg)
+#             db.session.commit()
+#             return jsonify({'result':'success', 'text':message})
+#     return jsonify({'result':'error', 'text':'user not exist'})
