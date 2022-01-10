@@ -1,7 +1,7 @@
 from flask import render_template, request
 from flask.json import jsonify
 from flask_login import current_user, login_required
-
+import os
 
 from app import db
 from app.admin import adm
@@ -67,6 +67,13 @@ def createRole():
         return jsonify({'result':'success', 'text':'role added'})
     except Exception as e:
         return jsonify({'result':'error', 'text':e})
+
+@adm.route('/config')
+@login_required
+@admin_required
+def checkConfig():
+    env=os.environ.get('DATABASE_URL')
+    return env
 
 @adm.route('/reg')
 def reg():
